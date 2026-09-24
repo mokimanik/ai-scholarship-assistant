@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+ollama
+langchain
+langchain-community
+langchain-ollama
+langchain-text-splitters
+chromadb
+langgraph
+crewai
+mcp

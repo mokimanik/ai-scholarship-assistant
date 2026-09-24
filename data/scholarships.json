@@ -1,0 +1,35 @@
+[
+  {
+    "id": "SCH001",
+    "name": "Merit-cum-Means National Scholarship",
+    "category": "ALL",
+    "min_cgpa": 7.5,
+    "max_family_income": 500000.0,
+    "eligible_years": [1, 2, 3, 4],
+    "amount": 50000.0,
+    "deadline": "2026-10-31",
+    "required_docs": ["Income Certificate", "Mark Sheet", "Aadhaar Card"]
+  },
+  {
+    "id": "SCH002",
+    "name": "Post-Matric SC/ST Empowerment Grant",
+    "category": "SC",
+    "min_cgpa": 6.0,
+    "max_family_income": 250000.0,
+    "eligible_years": [1, 2, 3, 4],
+    "amount": 75000.0,
+    "deadline": "2026-11-15",
+    "required_docs": ["Caste Certificate", "Income Certificate", "Bank Passbook"]
+  },
+  {
+    "id": "SCH003",
+    "name": "Senior Tech Excellence Fellowship",
+    "category": "ALL",
+    "min_cgpa": 8.5,
+    "max_family_income": 800000.0,
+    "eligible_years": [2, 3],
+    "amount": 100000.0,
+    "deadline": "2026-12-01",
+    "required_docs": ["Resume", "Recommendation Letter", "Transcript"]
+  }
+]

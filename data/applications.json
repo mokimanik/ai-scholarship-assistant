@@ -1,0 +1,17 @@
+[
+  {
+    "roll_no": "CS2023001",
+    "scholarship_id": "SCH001",
+    "status": "APPROVED"
+  },
+  {
+    "roll_no": "CS2023001",
+    "scholarship_id": "SCH003",
+    "status": "UNDER_REVIEW"
+  },
+  {
+    "roll_no": "EC2022045",
+    "scholarship_id": "SCH001",
+    "status": "PENDING"
+  }
+]

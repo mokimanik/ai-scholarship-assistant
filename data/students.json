@@ -1,0 +1,23 @@
+[
+  {
+    "roll_no": "CS2023001",
+    "category": "GENERAL",
+    "cgpa": 8.8,
+    "family_income": 450000.0,
+    "year": 2
+  },
+  {
+    "roll_no": "EC2022045",
+    "category": "OBC",
+    "cgpa": 7.9,
+    "family_income": 200000.0,
+    "year": 3
+  },
+  {
+    "roll_no": "ME2024012",
+    "category": "SC",
+    "cgpa": 9.1,
+    "family_income": 150000.0,
+    "year": 1
+  }
+]
