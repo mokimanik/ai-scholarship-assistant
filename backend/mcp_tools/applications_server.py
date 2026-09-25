@@ -17,12 +17,7 @@ from backend import config
 mcp = FastMCP("Applications Server")
 
 
-def load_applications() -> List[Dict[str, Any]]:
-    """Helper function to load application records from data/applications.json."""
-    if not config.APPLICATIONS_FILE_PATH.exists():
-        return []
-    with open(config.APPLICATIONS_FILE_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+from backend.data_loader import load_applications
 
 
 @mcp.tool()

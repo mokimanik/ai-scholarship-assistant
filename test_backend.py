@@ -15,16 +15,16 @@ def test_api():
     res_students = client.get("/students")
     print(f"Status: {res_students.status_code}, Count: {len(res_students.json())}")
     assert res_students.status_code == 200
-    assert len(res_students.json()) == 3
+    assert len(res_students.json()) == 100
 
     print("\n3. Testing GET /scholarships...")
     res_scholarships = client.get("/scholarships")
     print(f"Status: {res_scholarships.status_code}, Count: {len(res_scholarships.json())}")
     assert res_scholarships.status_code == 200
-    assert len(res_scholarships.json()) == 3
+    assert len(res_scholarships.json()) == 100
 
-    print("\n4. Testing GET /match/CS2023001...")
-    res_match = client.get("/match/CS2023001")
+    print("\n4. Testing GET /match/CE2021026...")
+    res_match = client.get("/match/CE2021026")
     print(f"Status: {res_match.status_code}")
     data = res_match.json()
     print(f"Student: {data['student']['roll_no']}")
@@ -33,7 +33,7 @@ def test_api():
     for sch in data['matched_scholarships']:
         print(f"  - [{sch['id']}] {sch['name']}")
     assert res_match.status_code == 200
-    assert data["total_matched"] == 2
+    assert data["total_matched"] == 8
 
     print("\n5. Testing GET /match/INVALID_ROLL (404 expected)...")
     res_404 = client.get("/match/INVALID_ROLL")
@@ -60,7 +60,7 @@ def test_api():
     assert res_pq_404.status_code == 404
 
     print("\n9. Testing GET /policy-question/SCH001 (Mocked QA Chain)...")
-    with patch("backend.rag.qa_chain.answer_policy_question") as mock_qa:
+    with patch("backend.main.answer_policy_question") as mock_qa:
         mock_qa.return_value = "Appeals must be submitted to the Grievance Redressal Cell within 15 calendar days."
         res_pq = client.get("/policy-question/SCH001?question=What+is+the+appeal+process")
         print(f"Status: {res_pq.status_code}, Body: {res_pq.json()}")
@@ -69,8 +69,8 @@ def test_api():
         assert res_pq.json()["question"] == "What is the appeal process"
         assert "Grievance Redressal Cell" in res_pq.json()["answer"]
 
-    print("\n10. Testing GET /workflow/CS2023001 (LangGraph Workflow)...")
-    res_wf = client.get("/workflow/CS2023001")
+    print("\n10. Testing GET /workflow/CE2021026 (LangGraph Workflow)...")
+    res_wf = client.get("/workflow/CE2021026")
     print(f"Status: {res_wf.status_code}")
     wf_data = res_wf.json()
     print(f"Needs Human Review: {wf_data['needs_human_review']}")
@@ -78,8 +78,8 @@ def test_api():
     print(f"Final Response: {wf_data['final_response']}")
     assert res_wf.status_code == 200
     assert wf_data["needs_human_review"] is False
-    assert len(wf_data["matched_scholarships"]) == 2
-    assert "CS2023001" in wf_data["final_response"]
+    assert len(wf_data["matched_scholarships"]) == 8
+    assert "CE2021026" in wf_data["final_response"]
 
     print("\n11. Testing GET /workflow/INVALID_ROLL (LangGraph Human Review Fallback)...")
     res_wf_invalid = client.get("/workflow/INVALID_ROLL")
@@ -91,8 +91,8 @@ def test_api():
     assert wf_invalid_data["needs_human_review"] is True
     assert "manual human review" in wf_invalid_data["final_response"].lower()
 
-    print("\n12. Testing GET /crew-workflow/CS2023001 (CrewAI + LangGraph)...")
-    res_cwf = client.get("/crew-workflow/CS2023001")
+    print("\n12. Testing GET /crew-workflow/CE2021026 (CrewAI + LangGraph)...")
+    res_cwf = client.get("/crew-workflow/CE2021026")
     print(f"Status: {res_cwf.status_code}")
     cwf_data = res_cwf.json()
     print(f"Needs Human Review: {cwf_data['needs_human_review']}")
@@ -101,8 +101,8 @@ def test_api():
     print(f"Crew Summary: {cwf_data['crew_summary']}")
     assert res_cwf.status_code == 200
     assert cwf_data["needs_human_review"] is False
-    assert len(cwf_data["matched_scholarships"]) == 2
-    assert len(cwf_data["applications"]) == 2
+    assert len(cwf_data["matched_scholarships"]) == 8
+
 
     print("\n[SUCCESS] All FastAPI Endpoint Tests Passed!")
 

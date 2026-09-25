@@ -9,3 +9,5 @@ chromadb
 langgraph
 crewai
 mcp
+pandas
+openpyxl

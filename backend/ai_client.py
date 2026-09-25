@@ -6,33 +6,26 @@ from backend import config
 from models.scholarship import Scholarship
 
 
+from backend.data_loader import load_scholarships
+
+
 def generate_summary(scholarship_id: str) -> str:
     """
     Load scholarship by id, build a prompt asking Ollama to explain
     the scholarship in one plain-English sentence for a student,
     and return the response text.
     """
-    if not config.SCHOLARSHIPS_FILE_PATH.exists():
-        raise HTTPException(
-            status_code=404,
-            detail=f"Scholarship with ID '{scholarship_id}' not found."
-        )
-
-    with open(config.SCHOLARSHIPS_FILE_PATH, "r", encoding="utf-8") as f:
-        scholarships_data = json.load(f)
-
-    target_data = next(
-        (s for s in scholarships_data if str(s.get("id")).lower() == scholarship_id.lower()),
+    scholarships = load_scholarships()
+    scholarship = next(
+        (s for s in scholarships if s.id.lower() == scholarship_id.lower()),
         None
     )
 
-    if not target_data:
+    if not scholarship:
         raise HTTPException(
             status_code=404,
             detail=f"Scholarship with ID '{scholarship_id}' not found."
         )
-
-    scholarship = Scholarship.from_dict(target_data)
 
     prompt = (
         f"Explain the following scholarship in one plain-English sentence for a student:\n"

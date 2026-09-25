@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, date
 from typing import Dict, Any, List
-from crewai import Agent, Task, Crew, Process
+from crewai import Agent, Task, Crew, Process, LLM
 from crewai.tools import tool
 
 from backend import config
@@ -9,13 +9,14 @@ from models.student import Student
 from models.scholarship import Scholarship
 from models.application import Application
 
+# Configure LLM explicitly for local Ollama
+ollama_llm = LLM(
+    model=config.CREW_LLM_MODEL,
+    base_url=config.OLLAMA_BASE_URL
+)
 
-def load_applications() -> List[Dict[str, Any]]:
-    """Helper function to load application objects from data/applications.json."""
-    if not config.APPLICATIONS_FILE_PATH.exists():
-        return []
-    with open(config.APPLICATIONS_FILE_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+
+from backend.data_loader import load_applications, load_students, load_scholarships
 
 
 @tool("Match Scholarships Tool")
@@ -99,13 +100,13 @@ def check_deadlines_tool(roll_no: str) -> str:
     return "\n\n".join(report_lines)
 
 
-# Define CrewAI Agents with iteration limits, execution timeouts, and smaller fast model (llama3.2:1b)
+# Define CrewAI Agents with iteration limits, execution timeouts, using local Ollama LLM
 eligibility_agent = Agent(
     role="Scholarship Eligibility Specialist",
     goal="Match a student's profile against scholarship criteria and explain why they qualify or don't.",
     backstory="You are an expert academic advisor who matches students to financial aid and scholarship programs.",
     tools=[match_scholarships_tool],
-    llm=config.CREW_LLM_MODEL,
+    llm=ollama_llm,
     max_iter=3,
     max_execution_time=15,
     verbose=False
@@ -116,7 +117,7 @@ application_tracker_agent = Agent(
     goal="Check existing application history and statuses for students.",
     backstory="You are a meticulous record keeper responsible for tracking student scholarship applications.",
     tools=[track_applications_tool],
-    llm=config.CREW_LLM_MODEL,
+    llm=ollama_llm,
     max_iter=3,
     max_execution_time=15,
     verbose=False
@@ -127,7 +128,7 @@ deadline_alert_agent = Agent(
     goal="Review matched scholarship deadlines. Flag ONLY deadlines with days_remaining <= 5 as urgent. If days_remaining > 5, explicitly report the deadline as 'on schedule'.",
     backstory="You are a precise deadline coordinator. You strictly call a deadline 'urgent' ONLY if days_remaining <= 5. For any deadline with days_remaining > 5, you explicitly state that it is 'on schedule'.",
     tools=[check_deadlines_tool],
-    llm=config.CREW_LLM_MODEL,
+    llm=ollama_llm,
     max_iter=3,
     max_execution_time=15,
     verbose=False

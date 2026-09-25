@@ -1,6 +1,7 @@
 import json
 from typing import List, Dict, Any
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from models.student import Student
 from models.scholarship import Scholarship
@@ -14,23 +15,16 @@ app = FastAPI(
     version=config.VERSION
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-def load_students() -> List[Student]:
-    """Helper function to load student objects from data/students.json."""
-    if not config.STUDENTS_FILE_PATH.exists():
-        return []
-    with open(config.STUDENTS_FILE_PATH, "r", encoding="utf-8") as f:
-        data = json.load(f)
-        return [Student.from_dict(item) for item in data]
 
-
-def load_scholarships() -> List[Scholarship]:
-    """Helper function to load scholarship objects from data/scholarships.json."""
-    if not config.SCHOLARSHIPS_FILE_PATH.exists():
-        return []
-    with open(config.SCHOLARSHIPS_FILE_PATH, "r", encoding="utf-8") as f:
-        data = json.load(f)
-        return [Scholarship.from_dict(item) for item in data]
+from backend.data_loader import load_students, load_scholarships, load_applications
 
 
 @app.get("/health")
