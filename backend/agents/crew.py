@@ -9,10 +9,11 @@ from models.student import Student
 from models.scholarship import Scholarship
 from models.application import Application
 
-# Configure LLM explicitly for local Ollama
-ollama_llm = LLM(
+# Configure LLM explicitly for Gemini
+gemini_llm = LLM(
     model=config.CREW_LLM_MODEL,
-    base_url=config.OLLAMA_BASE_URL
+    api_key=config.GEMINI_API_KEY,
+    max_retries=1
 )
 
 
@@ -100,13 +101,13 @@ def check_deadlines_tool(roll_no: str) -> str:
     return "\n\n".join(report_lines)
 
 
-# Define CrewAI Agents with iteration limits, execution timeouts, using local Ollama LLM
+# Define CrewAI Agents with iteration limits, execution timeouts, using Gemini LLM
 eligibility_agent = Agent(
     role="Scholarship Eligibility Specialist",
     goal="Match a student's profile against scholarship criteria and explain why they qualify or don't.",
     backstory="You are an expert academic advisor who matches students to financial aid and scholarship programs.",
     tools=[match_scholarships_tool],
-    llm=ollama_llm,
+    llm=gemini_llm,
     max_iter=3,
     max_execution_time=15,
     verbose=False
@@ -117,7 +118,7 @@ application_tracker_agent = Agent(
     goal="Check existing application history and statuses for students.",
     backstory="You are a meticulous record keeper responsible for tracking student scholarship applications.",
     tools=[track_applications_tool],
-    llm=ollama_llm,
+    llm=gemini_llm,
     max_iter=3,
     max_execution_time=15,
     verbose=False
@@ -128,7 +129,7 @@ deadline_alert_agent = Agent(
     goal="Review matched scholarship deadlines. Flag ONLY deadlines with days_remaining <= 5 as urgent. If days_remaining > 5, explicitly report the deadline as 'on schedule'.",
     backstory="You are a precise deadline coordinator. You strictly call a deadline 'urgent' ONLY if days_remaining <= 5. For any deadline with days_remaining > 5, you explicitly state that it is 'on schedule'.",
     tools=[check_deadlines_tool],
-    llm=ollama_llm,
+    llm=gemini_llm,
     max_iter=3,
     max_execution_time=15,
     verbose=False

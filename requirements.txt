@@ -1,9 +1,10 @@
 fastapi
 uvicorn
-ollama
 langchain
 langchain-community
-langchain-ollama
+langchain-google-genai
+google-generativeai
+python-dotenv
 langchain-text-splitters
 chromadb
 langgraph

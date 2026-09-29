@@ -45,9 +45,9 @@ def test_api():
     print(f"Status: {res_sum_404.status_code}, Detail: {res_sum_404.json()['detail']}")
     assert res_sum_404.status_code == 404
 
-    print("\n7. Testing GET /summary/SCH001 (Mocked Ollama call)...")
-    with patch("ollama.generate") as mock_gen:
-        mock_gen.return_value = {"response": "This scholarship offers financial assistance to eligible students."}
+    print("\n7. Testing GET /summary/SCH001 (Mocked Gemini call)...")
+    with patch("backend.ai_client.generate_scholarship_summary") as mock_gen:
+        mock_gen.return_value = "This scholarship offers financial assistance to eligible students."
         res_sum = client.get("/summary/SCH001")
         print(f"Status: {res_sum.status_code}, Body: {res_sum.json()}")
         assert res_sum.status_code == 200
