@@ -9,7 +9,7 @@ def main():
 
     print("\n--- Match Matrix ---")
     for s in students[:3]:
-        print(f"\nStudent {s.roll_no} (Category: {s.category}, CGPA: {s.cgpa}, Income: {s.family_income}, Year: {s.year}):")
+        print(f"\nStudent {s.roll_no} - {s.name} (Category: {s.category}, CGPA: {s.cgpa}, Income: {s.family_income}, Year: {s.year}):")
         for sch in scholarships[:5]:
             is_matched = sch.matches(s)
             status_str = "ELIGIBLE" if is_matched else "NOT ELIGIBLE"

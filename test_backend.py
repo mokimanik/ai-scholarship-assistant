@@ -13,9 +13,13 @@ def test_api():
 
     print("\n2. Testing GET /students...")
     res_students = client.get("/students")
-    print(f"Status: {res_students.status_code}, Count: {len(res_students.json())}")
+    students_list = res_students.json()
+    print(f"Status: {res_students.status_code}, Count: {len(students_list)}")
     assert res_students.status_code == 200
-    assert len(res_students.json()) == 100
+    assert len(students_list) == 100
+    assert "name" in students_list[0]
+    assert len(students_list[0]["name"]) > 0
+    print(f"Sample Student 0 Name: {students_list[0]['name']}")
 
     print("\n3. Testing GET /scholarships...")
     res_scholarships = client.get("/scholarships")

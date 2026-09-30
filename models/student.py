@@ -5,6 +5,7 @@ from typing import Dict, Any
 @dataclass
 class Student:
     roll_no: str
+    name: str
     category: str
     cgpa: float
     family_income: float
@@ -14,6 +15,7 @@ class Student:
     def from_dict(cls, data: Dict[str, Any]) -> "Student":
         return cls(
             roll_no=str(data["roll_no"]),
+            name=str(data.get("name", "")),
             category=str(data["category"]),
             cgpa=float(data["cgpa"]),
             family_income=float(data["family_income"]),

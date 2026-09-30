@@ -1,6 +1,7 @@
 [
   {
     "roll_no": "CS2023001",
+    "name": "Aarav Sharma",
     "category": "GENERAL",
     "cgpa": 8.8,
     "family_income": 450000.0,
@@ -8,6 +9,7 @@
   },
   {
     "roll_no": "EC2022045",
+    "name": "Priya Patel",
     "category": "OBC",
     "cgpa": 7.9,
     "family_income": 200000.0,
@@ -15,6 +17,7 @@
   },
   {
     "roll_no": "ME2024012",
+    "name": "Rohan Verma",
     "category": "SC",
     "cgpa": 9.1,
     "family_income": 150000.0,
